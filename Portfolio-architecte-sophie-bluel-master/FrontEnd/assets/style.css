@@ -188,6 +188,37 @@ margin: auto;
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
+#Connection {
+	width: 50%;
+margin: auto;
+}
+#Connection > * {
+	text-align: center;
+
+}
+#Connection h2{
+	margin-bottom: 20px;
+}
+#Connection form {
+	text-align: left;
+	margin-top:30px;
+	display: flex;
+	flex-direction: column;
+}
+
+#Connection input {
+	height: 50px;
+	font-size: 1.2em;
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
+#Connection label {
+	margin: 2em 0 1em 0;
+}
+#Connection textarea {
+	border: none;
+	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
+}
 input[type="submit"]{
 	font-family: 'Syne';
 	font-weight: 700;
