@@ -118,7 +118,7 @@ async function init() {
 init();
 
 // Sortir de la fonction parametre la liste et la stocké dans une variable
-// INNER HTML 
+// INNER HTML a enlever de partout 
 // Fonction init : renomer appel get cate et getwork 
 // plus faire tableau pour stocker dans une constante; filtrer ou pas oins d'appel api 
 // Git hub pour voir les mise à jour git push 
