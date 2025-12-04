@@ -2,6 +2,9 @@
    v2.0 | 20110126
    License: none (public domain)
 */
+* {
+	box-sizing: border-box;
+}
 
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -257,4 +260,28 @@ footer nav ul {
 	position: absolute;
 	top: 0;
 	left: 0%;
+}
+
+/* Modale */
+
+.modal {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.8);
+	display: none; /* <-- IMPORTANT */
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;  /* <-- pour passer au-dessus de tout */
+}
+.modal-wrapper {
+	background-color: white;
+	max-width: calc(100vw - 40px);  /* largeur max */
+	max-height: calc(100vh - 40px); /* hauteur max */
+	width: 500px;
+	height: 400px;
+	padding: 20px;
+	border-radius: 8px;
 }

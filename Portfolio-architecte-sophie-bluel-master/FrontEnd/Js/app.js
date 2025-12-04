@@ -128,25 +128,31 @@ function displayAdminMode() {
         const editBanner = document.createElement('div');
         editBanner.className = 'edition';
         
-        // Créer le paragraphe
-        const p = document.createElement('p');
+        // Créer le lien <a>
+        const link = document.createElement("a");
+        link.href = "#modal";           // <--- TON LIEN
+        link.className = "open-modal";  // <--- pour gérer l'ouverture en JS
+        link.style.color = "white";
+        link.style.textDecoration = "none";
+        link.style.cursor = "pointer";
         
         // Créer l'icône
         const icon = document.createElement('i');
         icon.className = 'fa-regular fa-pen-to-square';
         
         // Créer le texte
-        const text = document.createTextNode('Mode édition');
+        const text = document.createTextNode(' Mode édition');
         
         // Assembler
-        p.appendChild(icon);
-        p.appendChild(text);
-        editBanner.appendChild(p);
+        link.appendChild(icon);
+        link.appendChild(text);
+        editBanner.appendChild(link);
         
         // Ajouter au début du body
         document.body.prepend(editBanner);
     }
 }
+
 
 // Fonction d'initialisation
 async function init() {
@@ -167,6 +173,20 @@ async function init() {
         buttonAll.addEventListener("click", () => displayWorks());
     }
 }
+// Gestion de l'ouverture / fermeture de la modale
+document.addEventListener("click", (event) => {
+
+    // --- OUVRIR LA MODALE ---
+    if (event.target.closest(".open-modal")) {
+        const modal = document.getElementById("modal");
+        if (modal) modal.style.display = "flex";
+    }
+
+    // --- FERMER LA MODALE EN CLIQUANT SUR LE FOND ---
+    if (event.target.id === "modal") {
+        event.target.style.display = "none";
+    }
+});
 
 // Lancer l'application
 init();
