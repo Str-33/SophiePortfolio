@@ -34,13 +34,23 @@ async function fetchCategories() {
     }
 }
 
-// Fonction pour créer un élément figure
+// Fonction pour créer un élément figure 
 function createFigure(data) {
     const figure = document.createElement("figure");
-    figure.innerHTML = `
-        <img src="${data.imageUrl}" alt="${data.title}">
-        <figcaption>${data.title}</figcaption>
-    `;
+    
+    // Créer l'image
+    const img = document.createElement("img");
+    img.src = data.imageUrl;
+    img.alt = data.title;
+    
+    // Créer la légende
+    const figcaption = document.createElement("figcaption");
+    figcaption.textContent = data.title;
+    
+    // Assembler
+    figure.appendChild(img);
+    figure.appendChild(figcaption);
+    
     return figure;
 }
 
@@ -95,10 +105,9 @@ function displayFilters() {
     }
     
     // Si déconnecté, afficher tous les filtres
-    filterContainer.style.display = 'flex'; // ou 'block' selon votre CSS
+    filterContainer.style.display = 'flex';
     
     // Vider le conteneur avant d'ajouter les filtres (évite les doublons)
-    // MAIS garder le bouton "Tous" s'il existe déjà dans le HTML
     const dynamicFilters = filterContainer.querySelectorAll('.filter-btn');
     dynamicFilters.forEach(filter => filter.remove());
     
@@ -110,8 +119,40 @@ function displayFilters() {
     filterContainer.appendChild(fragment);
 }
 
+// Fonction pour afficher le mode admin 
+function displayAdminMode() {
+    if (localStorage.authToken) {
+        console.log("Mode admin activé");
+        
+        // Créer la bannière
+        const editBanner = document.createElement('div');
+        editBanner.className = 'edition';
+        
+        // Créer le paragraphe
+        const p = document.createElement('p');
+        
+        // Créer l'icône
+        const icon = document.createElement('i');
+        icon.className = 'fa-regular fa-pen-to-square';
+        
+        // Créer le texte
+        const text = document.createTextNode('Mode édition');
+        
+        // Assembler
+        p.appendChild(icon);
+        p.appendChild(text);
+        editBanner.appendChild(p);
+        
+        // Ajouter au début du body
+        document.body.prepend(editBanner);
+    }
+}
+
 // Fonction d'initialisation
 async function init() {
+    // Afficher le mode admin
+    displayAdminMode();
+    
     // Récupérer les données
     await fetchWorks();
     await fetchCategories();
@@ -126,20 +167,6 @@ async function init() {
         buttonAll.addEventListener("click", () => displayWorks());
     }
 }
-
-
-// Fonction pour afficher le mode admin
-function displayAdminMode() {
-    if (localStorage.authToken) {
-        console.log("Mode admin activé");
-        const editBanner = document.createElement('div');
-        editBanner.className = 'edition';
-        editBanner.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>';
-        document.body.prepend(editBanner);
-    }
-}
-
-displayAdminMode();
 
 // Lancer l'application
 init();

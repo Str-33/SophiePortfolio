@@ -141,11 +141,20 @@ li:hover {
 	font-family: 'Syne';
 	color: #1D6154;
 	cursor: pointer;
+	background-color: white;
+	transition: all 0.3s ease;
 }
 .div-filtre > *:hover {
 	background-color: #1D6154;
 	color: white;
 }
+
+/* Style pour le filtre actif */
+.div-filtre > *.active {
+	background-color: #1D6154;
+	color: white;
+}
+
 .gallery {
 	width: 100%;
 	display: grid;
