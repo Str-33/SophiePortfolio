@@ -83,11 +83,24 @@ function createFilterButton(category) {
 function displayFilters() {
     const filterContainer = document.querySelector(".div-filtre");
     
-    // Vérifier que le conteneur existe
     if (!filterContainer) {
         console.error("Le conteneur de filtres n'existe pas dans le DOM");
         return;
     }
+    
+    // Si connecté, cacher tous les filtres
+    if (localStorage.authToken) {
+        filterContainer.style.display = 'none';
+        return;
+    }
+    
+    // Si déconnecté, afficher tous les filtres
+    filterContainer.style.display = 'flex'; // ou 'block' selon votre CSS
+    
+    // Vider le conteneur avant d'ajouter les filtres (évite les doublons)
+    // MAIS garder le bouton "Tous" s'il existe déjà dans le HTML
+    const dynamicFilters = filterContainer.querySelectorAll('.filter-btn');
+    dynamicFilters.forEach(filter => filter.remove());
     
     // Créer les boutons de filtre
     const fragment = document.createDocumentFragment();
@@ -114,11 +127,19 @@ async function init() {
     }
 }
 
+
+// Fonction pour afficher le mode admin
+function displayAdminMode() {
+    if (localStorage.authToken) {
+        console.log("Mode admin activé");
+        const editBanner = document.createElement('div');
+        editBanner.className = 'edition';
+        editBanner.innerHTML = '<p><i class="fa-regular fa-pen-to-square"></i>Mode édition</p>';
+        document.body.prepend(editBanner);
+    }
+}
+
+displayAdminMode();
+
 // Lancer l'application
 init();
-
-// Sortir de la fonction parametre la liste et la stocké dans une variable
-// INNER HTML a enlever de partout 
-// Fonction init : renomer appel get cate et getwork 
-// plus faire tableau pour stocker dans une constante; filtrer ou pas oins d'appel api 
-// Git hub pour voir les mise à jour git push 

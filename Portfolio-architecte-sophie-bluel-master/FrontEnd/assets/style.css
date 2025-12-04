@@ -53,6 +53,7 @@ body {
 	margin:auto;
 	font-family: 'Work Sans' ;
 	font-size: 14px;
+	margin-top: 100px;
 }
 header {
 	display: flex;
@@ -236,4 +237,15 @@ footer nav ul {
 	justify-content: flex-end;
 	margin: 2em
 }
-
+.edition {
+	background-color: black;
+	color: white;
+	height: 40px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0%;
+}
