@@ -358,7 +358,6 @@ function displayFilters() {
     filterContainer.appendChild(fragment);
 }
 
-// Fonction pour afficher le mode admin 
 function displayAdminMode() {
     if (localStorage.authToken) {
         console.log("Mode admin activé");
@@ -367,7 +366,6 @@ function displayAdminMode() {
         const editBanner = document.createElement('div');
         editBanner.className = 'edition';
         
-        // Créer le lien <a>
         const link = document.createElement("a");
         link.href = "#modal";           
         link.className = "open-modal";  
@@ -375,23 +373,42 @@ function displayAdminMode() {
         link.style.textDecoration = "none";
         link.style.cursor = "pointer";
         
-        // Créer l'icône
         const icon = document.createElement('i');
         icon.className = 'fa-regular fa-pen-to-square';
         
-        // Créer le texte
         const text = document.createTextNode(' Mode édition');
         
-        // Assembler
         link.appendChild(icon);
         link.appendChild(text);
         editBanner.appendChild(link);
         
-        // Ajouter au début du body
         document.body.prepend(editBanner);
+        
+        // Afficher le bouton "modifier"
+        const editProjectsBtn = document.querySelector('.edit-projects');
+        if (editProjectsBtn) {
+            editProjectsBtn.style.display = 'inline-flex';
+        }
+        
+        // Changer "login" en "logout"
+        const loginLink = document.getElementById('login-link');
+        if (loginLink) {
+            loginLink.textContent = 'logout';
+            loginLink.href = '#';
+            loginLink.addEventListener('click', handleLogout);
+        }
     }
 }
-
+function handleLogout(event) {
+    event.preventDefault();
+    
+    // Supprimer le token et userId
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('userId');
+    
+    // Recharger la page
+    window.location.reload();
+}
 
 // Fonction d'initialisation
 async function init() {

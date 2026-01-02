@@ -39,7 +39,7 @@
 					<label for="file-input" class="btn-upload">+ Ajouter photo</label>
 					<input type="file" id="file-input" accept="image/png, image/jpeg" hidden>
 					<p class="upload-info">jpg, png : 4mo max</p>
-					<img id="preview-image" class="preview-hidden" alt="Aperçu"> 
+					<img id="preview-image" class="preview-hidden" alt="Aperçu">
 				</div>
 
 				<label for="title-input">Titre</label>
@@ -62,7 +62,7 @@
 			<ul>
 				<li><a href="#portfolio">projets</a></li>
 				<li><a href="#contact">contact</a></li>
-				<li><a href="connection.html">login</a></li>
+				<li><a href="connection.html" id="login-link">login</a></li>
 				<li><img src="./assets/icons/instagram.png" alt="Instagram"></li>
 			</ul>
 		</nav>
@@ -84,13 +84,18 @@
 			</article>
 		</section>
 		<section id="portfolio">
-			<h2>Mes Projets</h2>
+			<div class="portfolio-header">
+				<h2>Mes Projets</h2>
+				<a href="#modal" class="open-modal edit-projects">
+					<i class="fa-regular fa-pen-to-square"></i> modifier
+				</a>
+			</div>
 			<div class="div-filtre">
 				<div class="Tous">Tous</div>
 			</div>
-			<div class="gallery">
-			</div>
+			<div class="gallery"></div>
 		</section>
+
 		<section id="contact">
 			<h2>Contact</h2>
 			<p>Vous avez un projet ? Discutons-en !</p>
