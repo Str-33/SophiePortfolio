@@ -276,7 +276,14 @@ input[type="submit"]{
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 0;
+	padding-right: 2em;
+}
+footer {
+    background-color: white;
+    width: 100%;
+    padding: 15px 0;  
+    margin-top: 50px;
 }
 .edition {
 	background-color: black;

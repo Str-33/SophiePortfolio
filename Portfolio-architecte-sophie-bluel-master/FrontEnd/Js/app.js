@@ -123,9 +123,41 @@ function displayModalGallery() {
     modalGallery.appendChild(fragment);
 }
 
-// Fonction de suppression (a faire ???)
-function deleteWork(workId) {
-    console.log("Suppression du projet:", workId);
+// Fonction de suppression
+async function deleteWork(workId) {
+    // Demander confirmation
+    if (!confirm("Voulez-vous vraiment supprimer ce projet ?")) {
+        return;
+    }
+    
+    const url = `http://localhost:5678/api/works/${workId}`;
+    const token = localStorage.getItem("authToken");
+    
+    try {
+        const response = await fetch(url, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        console.log("Projet supprimé avec succès:", workId);
+        
+        // Retirer le projet du tableau allWorks
+        allWorks = allWorks.filter(work => work.id !== workId);
+        
+        // Mettre à jour les deux galeries (principale et modale)
+        displayWorks();
+        displayModalGallery();
+        
+    } catch (error) {
+        console.error("Erreur lors de la suppression:", error);
+        alert("Erreur lors de la suppression du projet");
+    }
 }
 
 // Fonction pour remplir le select des catégories
@@ -349,6 +381,12 @@ function displayFilters() {
     // Vider le conteneur avant d'ajouter les filtres (évite les doublons)
     const dynamicFilters = filterContainer.querySelectorAll('.filter-btn');
     dynamicFilters.forEach(filter => filter.remove());
+
+      // Activer le bouton "Tous" par défaut
+    const buttonAll = document.querySelector(".Tous");
+    if (buttonAll) {
+        buttonAll.classList.add('active');
+    }
     
     // Créer les boutons de filtre
     const fragment = document.createDocumentFragment();
