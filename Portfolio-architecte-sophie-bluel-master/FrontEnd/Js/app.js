@@ -13,7 +13,6 @@ async function fetchWorks() {
         allWorks = await response.json();
         return allWorks;
     } catch (error) {
-        console.error("Erreur lors du chargement des projets:", error.message);
         return [];
     }
 }
@@ -29,7 +28,6 @@ async function fetchCategories() {
         allCategories = await response.json();
         return allCategories;
     } catch (error) {
-        console.error("Erreur lors du chargement des catégories:", error.message);
         return [];
     }
 }
@@ -60,12 +58,11 @@ function displayWorks(filterId = null) {
     
     // Vérifier que la galerie existe
     if (!gallery) {
-        console.error("La galerie n'existe pas dans le DOM");
         return;
     }
     
     // Vider la galerie
-    gallery.innerHTML = "";
+    gallery.textContent = "";
     
     // Filtrer les projets si nécessaire
     const worksToDisplay = filterId 
@@ -79,6 +76,7 @@ function displayWorks(filterId = null) {
     });
     gallery.appendChild(fragment);
 }
+
 // Fonction pour créer un élément de la galerie modale
 function createModalItem(data) {
     const container = document.createElement("div");
@@ -91,9 +89,11 @@ function createModalItem(data) {
     img.alt = data.title;
     
     // Créer l'icône de suppression
-    const deleteBtn = document.createElement("button");
+    const deleteBtn = document.createElement("div");
     deleteBtn.className = "delete-btn";
-    deleteBtn.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+    const icon = document.createElement("i");
+    icon.className = "fa-solid fa-trash-can";
+    deleteBtn.appendChild(icon);
     deleteBtn.addEventListener("click", () => deleteWork(data.id));
     
     // Assembler
@@ -108,12 +108,11 @@ function displayModalGallery() {
     const modalGallery = document.querySelector(".modal-gallery");
     
     if (!modalGallery) {
-        console.error("La galerie modale n'existe pas dans le DOM");
         return;
     }
     
     // Vider la galerie modale
-    modalGallery.innerHTML = "";
+    modalGallery.textContent = "";
     
     // Créer et ajouter les éléments
     const fragment = document.createDocumentFragment();
@@ -125,11 +124,6 @@ function displayModalGallery() {
 
 // Fonction de suppression
 async function deleteWork(workId) {
-    // Demander confirmation
-    if (!confirm("Voulez-vous vraiment supprimer ce projet ?")) {
-        return;
-    }
-    
     const url = `http://localhost:5678/api/works/${workId}`;
     const token = localStorage.getItem("authToken");
     
@@ -145,8 +139,6 @@ async function deleteWork(workId) {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
         
-        console.log("Projet supprimé avec succès:", workId);
-        
         // Retirer le projet du tableau allWorks
         allWorks = allWorks.filter(work => work.id !== workId);
         
@@ -155,8 +147,7 @@ async function deleteWork(workId) {
         displayModalGallery();
         
     } catch (error) {
-        console.error("Erreur lors de la suppression:", error);
-        alert("Erreur lors de la suppression du projet");
+        // Gestion d'erreur silencieuse
     }
 }
 
@@ -167,7 +158,10 @@ function populateCategorySelect() {
     if (!select) return;
     
     // Vider le select (garder juste l'option vide)
-    select.innerHTML = '<option value=""></option>';
+    select.textContent = "";
+    const emptyOption = document.createElement("option");
+    emptyOption.value = "";
+    select.appendChild(emptyOption);
     
     // Ajouter les catégories
     allCategories.forEach(category => {
@@ -184,47 +178,20 @@ function handleImagePreview() {
     const preview = document.getElementById("preview-image");
     const uploadZone = document.querySelector(".upload-zone");
     
-    console.log("=== INIT handleImagePreview ===");
-    console.log("fileInput trouvé:", fileInput);
-    console.log("preview trouvé:", preview);
-    console.log("uploadZone trouvé:", uploadZone);
-    
-    if (!fileInput) {
-        console.error("❌ file-input non trouvé !");
-        return;
-    }
-    
-    if (!preview) {
-        console.error("❌ preview-image non trouvé !");
-        return;
-    }
-    
-    if (!uploadZone) {
-        console.error("❌ upload-zone non trouvée !");
+    if (!fileInput || !preview || !uploadZone) {
         return;
     }
     
     // Écouter l'événement change
     fileInput.addEventListener("change", function(e) {
-        console.log("🎯 EVENT CHANGE DÉCLENCHÉ !");
-        console.log("Fichiers:", e.target.files);
-        console.log("Nombre de fichiers:", e.target.files.length);
-        
         const file = e.target.files[0];
         
         if (!file) {
-            console.log("❌ Aucun fichier sélectionné");
             return;
         }
         
-        console.log("✅ Fichier sélectionné:");
-        console.log("  - Nom:", file.name);
-        console.log("  - Type:", file.type);
-        console.log("  - Taille:", file.size, "octets");
-        
         // Vérifier la taille (4Mo max)
         if (file.size > 4 * 1024 * 1024) {
-            alert("Le fichier est trop volumineux (max 4Mo)");
             fileInput.value = "";
             return;
         }
@@ -233,8 +200,6 @@ function handleImagePreview() {
         const reader = new FileReader();
         
         reader.onload = function(event) {
-            console.log("📸 Image chargée, src length:", event.target.result.length);
-            
             // Mettre à jour l'image
             preview.src = event.target.result;
             
@@ -243,23 +208,12 @@ function handleImagePreview() {
             preview.classList.add("preview-visible");
             uploadZone.classList.add("has-image");
             
-            console.log("Classes de preview:", preview.className);
-            console.log("Classes de uploadZone:", uploadZone.className);
-            console.log("Style display de preview:", window.getComputedStyle(preview).display);
-            
             // Vérifier la validité du formulaire
             checkFormValidity();
         };
         
-        reader.onerror = function(error) {
-            console.error("❌ Erreur lors de la lecture du fichier:", error);
-        };
-        
-        console.log("📖 Début de la lecture du fichier...");
         reader.readAsDataURL(file);
     });
-    
-    console.log("✅ Event listener ajouté sur file-input");
 }
 
 // Fonction pour vérifier si le formulaire est valide
@@ -313,11 +267,8 @@ async function submitNewWork(formData) {
         document.getElementById("preview-image").classList.add("preview-hidden");
         document.querySelector(".upload-zone").classList.remove("has-image");
         
-        alert("Projet ajouté avec succès !");
-        
     } catch (error) {
-        console.error("Erreur lors de l'ajout du projet:", error);
-        alert("Erreur lors de l'ajout du projet");
+        // Gestion d'erreur silencieuse
     }
 }
 
@@ -365,7 +316,6 @@ function displayFilters() {
     const filterContainer = document.querySelector(".div-filtre");
     
     if (!filterContainer) {
-        console.error("Le conteneur de filtres n'existe pas dans le DOM");
         return;
     }
     
@@ -382,7 +332,7 @@ function displayFilters() {
     const dynamicFilters = filterContainer.querySelectorAll('.filter-btn');
     dynamicFilters.forEach(filter => filter.remove());
 
-      // Activer le bouton "Tous" par défaut
+    // Activer le bouton "Tous" par défaut
     const buttonAll = document.querySelector(".Tous");
     if (buttonAll) {
         buttonAll.classList.add('active');
@@ -398,8 +348,6 @@ function displayFilters() {
 
 function displayAdminMode() {
     if (localStorage.authToken) {
-        console.log("Mode admin activé");
-        
         // Créer la bannière
         const editBanner = document.createElement('div');
         editBanner.className = 'edition';
@@ -437,6 +385,7 @@ function displayAdminMode() {
         }
     }
 }
+
 function handleLogout(event) {
     event.preventDefault();
     
@@ -461,12 +410,16 @@ async function init() {
     displayWorks();
     displayFilters();
     
+    // Initialiser la modale d'ajout 
+    initAddModal();
+    
     // Ajouter l'événement pour le bouton "Tous"
     const buttonAll = document.querySelector(".Tous");
     if (buttonAll) {
         buttonAll.addEventListener("click", () => displayWorks());
     }
 }
+
 // Gestion de l'ouverture / fermeture des modales
 document.addEventListener("click", (event) => {
 
@@ -502,25 +455,3 @@ document.addEventListener("click", (event) => {
 
 // Lancer l'application
 init();
-// Fonction d'initialisation
-async function init() {
-    // Afficher le mode admin
-    displayAdminMode();
-    
-    // Récupérer les données
-    await fetchWorks();
-    await fetchCategories();
-    
-    // Afficher les projets et les filtres
-    displayWorks();
-    displayFilters();
-    
-    // Initialiser la modale d'ajout 
-    initAddModal();
-    
-    // Ajouter l'événement pour le bouton "Tous"
-    const buttonAll = document.querySelector(".Tous");
-    if (buttonAll) {
-        buttonAll.addEventListener("click", () => displayWorks());
-    }
-}
